@@ -15,38 +15,36 @@ public class Day5 {
     }
 
     public int part1(String string) {
-        while (true) {
-            int len = string.length();
-                char c = 'a';
-                char C = 'A';
-                int lenin = string.length();
-                for (int k = 0; k < 26; k++) {
-                    String toreplace = new StringBuilder().append(c).append(C).toString();
-                    string = string.replace(toreplace, "");
-                    toreplace = new StringBuilder().append(C).append(c).toString();
-                    string = string.replace(toreplace, "");
-                    c += 1;
-                    C += 1;
+        char[] chars = string.toCharArray();
+        boolean lench = true;
+        StringBuilder chaine = new StringBuilder();
+
+
+        for (char c1 : chars) {
+            if (chaine.length() == 0) {
+                chaine.append(c1);
+            } else {
+                if ((c1 ^ chaine.charAt(chaine.length() - 1)) == 32) {
+                    chaine.deleteCharAt(chaine.length() - 1);
+                } else {
+                    chaine.append(c1);
                 }
-            if (string.length() == len) {
-                break;
             }
         }
+        string = chaine.toString();
         return string.length();
+
     }
 
     public void part2() {
         char c = 'a';
         char C = 'A';
-        int min = 999999;
+        int min = Integer.MAX_VALUE;
         for (int i = 0; i < 26; i++) {
             String string = mesStrings.get(0);
-            string = string.replace(new StringBuilder().append(c),"");
-            string = string.replace(new StringBuilder().append(C),"");
-            System.out.println((char) c +" | "+ (char)(C));
-            System.out.println(string);
-            min = Math.min(min , part1(string));
-            System.out.println(min);
+            string = string.replace(new StringBuilder().append(c), "");
+            string = string.replace(new StringBuilder().append(C), "");
+            min = Math.min(min, part1(string));
             c++;
             C++;
         }
@@ -55,9 +53,13 @@ public class Day5 {
     }
 
     public static void main(String[] args) {
+        long startTime = System.nanoTime();
         Lecture lecture = new Lecture("5.txt");
         Day5 day5 = new Day5(lecture.getList());
         System.out.println(day5.part1(day5.mesStrings.get(0)));
         day5.part2();
+        long endTime = System.nanoTime();
+        long duration = (endTime - startTime) / 1000000;
+        System.out.println(duration);
     }
 }
